@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="utf-8"><title>Lari Kata Rumah</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;700&display=swap">
+<style>
+:root{--card:#fffaf0;--ink:#1d2b4f;--mut:#5b6785;--acc:#ff8a1f;--on:#1d2b4f;--onx:#fff;--line:#e6dcc4;color-scheme:light dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--card:#1e2a44;--ink:#f6efdc;--mut:#b4bdd3;--on:#ffd166;--onx:#1d2b4f;--line:#3a4968}}
+:root[data-theme="dark"]{--card:#1e2a44;--ink:#f6efdc;--mut:#b4bdd3;--on:#ffd166;--onx:#1d2b4f;--line:#3a4968}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;overflow:hidden;font-family:Fredoka,system-ui,"Segoe UI",sans-serif;background:#9fdcf5;touch-action:none;user-select:none}
+[hidden]{display:none!important}
+#c{position:fixed;inset:0;width:100%;height:100%;display:block}
+button{font:inherit;cursor:pointer;border:0}
+#hud{position:fixed;left:0;right:0;top:env(safe-area-inset-top,0px);padding:8px 10px;pointer-events:none}
+.row{display:flex;gap:8px;justify-content:space-between;align-items:center;font-weight:700;color:#fff;text-shadow:0 2px 0 #1d2b4f}
+.row>*{background:#1d2b4fcc;padding:4px 10px;border-radius:14px;text-shadow:none;font-size:15px}
+#qb{margin:8px auto 0;max-width:520px;background:var(--card);color:var(--ink);border:4px solid var(--acc);border-radius:20px;padding:8px 52px 8px 14px;text-align:center;position:relative}
+#ql{color:var(--mut);font-size:13px}
+#q{font-size:clamp(22px,5.5vw,32px);font-weight:700;line-height:1.1}
+#spk{position:absolute;right:8px;top:50%;transform:translateY(-50%);width:38px;height:38px;border-radius:50%;background:var(--acc);font-size:18px;pointer-events:auto}
+#fb{position:fixed;left:50%;top:44%;transform:translate(-50%,-50%);font-size:clamp(24px,6vw,40px);font-weight:700;color:#fff;text-shadow:0 3px 0 #1d2b4f,0 0 12px #1d2b4f;text-align:center;pointer-events:none;opacity:0;transition:opacity .25s;width:90%}
+#ctl{position:fixed;left:0;right:0;bottom:calc(14px + env(safe-area-inset-bottom,0px));display:flex;justify-content:space-between;padding:0 14px}
+#ctl button{width:68px;height:68px;border-radius:50%;background:#ffffffd9;color:#1d2b4f;font-size:26px;box-shadow:0 4px 0 #1d2b4f}
+.scr{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:12px;background:#1d2b4f66}
+.card{background:var(--card);color:var(--ink);border-radius:26px;border:5px solid var(--acc);padding:16px 20px;width:100%;max-width:470px;max-height:94vh;overflow:auto;text-align:center;box-shadow:0 8px 0 #1d2b4f}
+h1{margin:4px 0;font-size:clamp(30px,8vw,42px);line-height:1;color:var(--acc);text-shadow:0 2px 0 var(--ink)}
+h2{margin:4px 0;font-size:28px}h3{margin:12px 0 6px;font-size:16px}
+p{margin:6px 0;color:var(--mut);font-size:14px}
+#him{height:130px;margin-top:-4px}
+.seg{display:flex;gap:6px;justify-content:center;flex-wrap:wrap}
+.seg button{padding:8px 14px;border-radius:14px;background:transparent;border:2px solid var(--line);color:var(--ink);font-weight:500}
+.seg button.on{background:var(--on);color:var(--onx);border-color:var(--on)}
+#names{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}
+#names input{font:inherit;padding:7px 10px;border-radius:12px;border:2px solid var(--line);background:transparent;color:var(--ink);width:100%}
+.go{margin-top:14px;background:var(--acc);color:#fff;font-weight:700;font-size:20px;padding:12px 28px;border-radius:18px;box-shadow:0 4px 0 #1d2b4f}
+.go:active{transform:translateY(3px);box-shadow:0 1px 0 #1d2b4f}
+.big{font-size:48px;font-weight:700;color:var(--acc)}.stars{font-size:34px}
+table{width:100%;border-collapse:collapse;margin-top:8px;font-size:14px}
+td,th{padding:6px 4px;border-bottom:1px solid var(--line)}th{color:var(--mut);font-weight:500}
+tr.w td{font-weight:700;color:var(--acc)}
+.sm{font-size:15px;padding:9px 16px;margin:10px 4px 0;box-shadow:none}
+#mu{pointer-events:auto;cursor:pointer}
+</style></head><body>
+<canvas id="c"></canvas>
+<div id="hud" hidden><div class="row"><span id="tn"></span><span id="hh"></span><span id="ss"></span><span id="sc"></span><span id="mu" role="button" aria-label="Musik">🎵</span></div>
+<div id="qb"><div id="ql"></div><div id="q"></div><button id="spk" aria-label="Dengar kata Inggris">🔊</button></div></div>
+<div id="fb"></div>
+<div id="ctl" hidden><button id="bl" aria-label="Kiri">◀</button><button id="bj" aria-label="Lompat">▲</button><button id="br" aria-label="Kanan">▶</button></div>
+<div class="scr" id="s1"><div class="card"><img id="him" src="data:image/webp;base64,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" alt="Karakter anak berkemeja biru">
+<h1>Lari Kata Rumah</h1><p>Larilah ke gerbang yang berisi arti yang benar!</p>
+<h3>Jumlah grup</h3><div class="seg" id="nt"></div><div id="names"></div>
+<h3>Level kecepatan</h3><div class="seg" id="lv"></div>
+<button class="go" id="go">Mulai Main</button>
+<p>Gerak: ← → atau geser layar. Lompat: ↑ atau Spasi.<br>1 jawaban benar = 10 poin, 1 bintang = 2 poin.</p></div></div>
+<div class="scr" id="s2" hidden></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+const W=[["Cooking","Memasak"],["Mopping the floor","Mengepel lantai"],["Washing the dishes","Mencuci piring"],["Sweeping the floor","Menyapu lantai"],["Making the bed","Merapikan tempat tidur"],["Gardening","Berkebun"],["Washing clothes","Mencuci pakaian"],["Cleaning the house","Membersihkan rumah"]];
+const $=s=>document.querySelector(s),LX=[-4,0,4],SP=[9,13,17],LC=[0x2ecc71,0x3498db,0xff9f1c];
+const sh=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
+const esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let nT=2,diff=1,nm=[],teams=[],cur=0,st=null,world=null;
+/* ---------- 3D ---------- */
+const R=new THREE.WebGLRenderer({canvas:$('#c'),antialias:true});R.setPixelRatio(Math.min(devicePixelRatio,2));
+const S=new THREE.Scene();S.background=new THREE.Color(0x9fdcf5);S.fog=new THREE.Fog(0x9fdcf5,45,170);
+const cam=new THREE.PerspectiveCamera(60,1,.1,300);
+S.add(new THREE.HemisphereLight(0xffffff,0x6a8a4a,.95));
+const dl=new THREE.DirectionalLight(0xfff2cc,.7);dl.position.set(5,12,6);S.add(dl);
+function rs(){R.setSize(innerWidth,innerHeight);cam.aspect=innerWidth/innerHeight;cam.updateProjectionMatrix()}
+addEventListener('resize',rs);rs();
+const mesh=(g,c,x=0,y=0,z=0)=>{const m=new THREE.Mesh(g,new THREE.MeshLambertMaterial({color:c}));m.position.set(x,y,z);return m};
+function faceTex(){const c=document.createElement('canvas');c.width=1024;c.height=512;const x=c.getContext('2d'),cx=768;
+ const E=(px,py,rx,ry,col)=>{x.fillStyle=col;x.beginPath();x.ellipse(px,py,rx,ry,0,0,7);x.fill()};
+ [-1,1].forEach(s=>{const ex=cx+s*85;E(cx+s*130,335,36,22,'rgba(255,110,90,.3)');
+  E(ex,270,37,31,'#fff');E(ex,274,23,23,'#a8641c');E(ex,274,12,12,'#1b0f08');E(ex-s*7,265,6,6,'#fff');
+  x.strokeStyle='#1b0f08';x.lineCap='round';x.lineWidth=7;x.beginPath();x.arc(ex,274,36,Math.PI*1.1,Math.PI*1.9);x.stroke();
+  x.lineWidth=12;x.beginPath();x.moveTo(ex-s*38,202);x.quadraticCurveTo(ex,176,ex+s*40,196);x.stroke()});
+ E(cx,368,42,26,'#b83c4a');E(cx,378,26,12,'#f07c86');E(cx,353,33,9,'#fff');
+ return new THREE.CanvasTexture(c)}
+function hero(){
+ const g=new THREE.Group(),H={g},sk=0xf1aa6a,bl=0x3f86e8,cf=0x6f97d0;
+ const M=(geo,c,x=0,y=0,z=0,r=.55)=>{const m=new THREE.Mesh(geo,new THREE.MeshStandardMaterial({color:c,roughness:r,metalness:0}));m.position.set(x,y,z);return m};
+ const T=M(new THREE.CylinderGeometry(.36,.4,.66,20),bl,0,.95,0);T.scale.z=.78;g.add(T);
+ g.add(M(new THREE.BoxGeometry(.52,.09,.3),bl,0,1.3,0),M(new THREE.CylinderGeometry(.11,.12,.16,12),sk,0,1.37,0));
+ for(let i=0;i<4;i++)g.add(M(new THREE.SphereGeometry(.028,8,8),0xf3dfc0,0,1.17-i*.15,-.3));
+ g.add(M(new THREE.BoxGeometry(.16,.17,.02),0x3a78d6,-.17,1.08,-.285));
+ const hd=new THREE.Group();hd.position.y=1.92;g.add(hd);H.hd=hd;
+ hd.add(M(new THREE.SphereGeometry(.62,32,24),sk));
+ const fm=new THREE.Mesh(new THREE.SphereGeometry(.623,32,24),new THREE.MeshLambertMaterial({map:faceTex(),transparent:true,polygonOffset:true,polygonOffsetFactor:-2}));hd.add(fm);
+ hd.add(M(new THREE.SphereGeometry(.075,12,12),sk,0,-.08,-.61));
+ const hr=new THREE.Group();hr.rotation.x=.45;hd.add(hr);
+ hr.add(M(new THREE.SphereGeometry(.655,32,16,0,Math.PI*2,0,Math.PI*.5),0x2a1c14,0,0,0,.8));
+ for(let i=0;i<26;i++){const th=Math.random()*1.15,ph=Math.random()*6.28,n=new THREE.Vector3(Math.sin(th)*Math.cos(ph),Math.cos(th),Math.sin(th)*Math.sin(ph));
+  const t=M(new THREE.ConeGeometry(.07,.22,6),0x3b2a1e,n.x*.66,n.y*.66,n.z*.66,.8);t.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),n);hr.add(t)}
+ [-1,1].forEach((s,i)=>{
+  const e=M(new THREE.SphereGeometry(.14,12,12),sk,s*.63,-.06,0);e.scale.set(.5,1,.8);hd.add(e);
+  const a=new THREE.Group();a.position.set(s*.44,1.2,0);
+  a.add(M(new THREE.CylinderGeometry(.12,.11,.26,12),bl,0,-.12,0),M(new THREE.CylinderGeometry(.135,.135,.1,12),0x3573d0,0,-.27,0),M(new THREE.CylinderGeometry(.085,.08,.22,10),sk,0,-.4,0),M(new THREE.SphereGeometry(.115,12,12),sk,0,-.55,0));g.add(a);H[i?'aR':'aL']=a;
+  const l=new THREE.Group();l.position.set(s*.18,.7,0);
+  l.add(M(new THREE.CylinderGeometry(.16,.14,.5,14),0x1f4a9c,0,-.25,0),M(new THREE.CylinderGeometry(.175,.175,.1,14),cf,0,-.46,0),M(new THREE.BoxGeometry(.3,.17,.46),0xffffff,0,-.6,-.07,.4),M(new THREE.BoxGeometry(.32,.05,.48),0xe9c9c0,0,-.68,-.07));g.add(l);H[i?'lR':'lL']=l});
+ return H}
+const H=hero();S.add(H.g);
+const starG=(()=>{const s=new THREE.Shape();for(let i=0;i<10;i++){const r=i%2?.18:.45,a=i*Math.PI/5+Math.PI/2;i?s.lineTo(Math.cos(a)*r,Math.sin(a)*r):s.moveTo(Math.cos(a)*r,Math.sin(a)*r)}return new THREE.ExtrudeGeometry(s,{depth:.15,bevelEnabled:false})})();
+function label(txt,col){
+ const c=document.createElement('canvas');c.width=512;c.height=256;const x=c.getContext('2d');
+ x.fillStyle='#fffdf5';x.beginPath();x.roundRect(8,8,496,240,40);x.fill();x.lineWidth=16;x.strokeStyle=col;x.stroke();
+ x.fillStyle='#1d2b4f';x.textAlign='center';x.textBaseline='middle';let fs=76,ls;
+ for(;fs>24;fs-=4){x.font='bold '+fs+'px Fredoka,system-ui,sans-serif';ls=[];let l='';txt.split(' ').forEach(w=>{const t=l?l+' '+w:w;if(x.measureText(t).width>420&&l){ls.push(l);l=w}else l=t});ls.push(l);if(ls.length*fs*1.1<200)break}
+ ls.forEach((l,i)=>x.fillText(l,256,128+(i-(ls.length-1)/2)*fs*1.1));
+ const m=new THREE.Mesh(new THREE.PlaneGeometry(3.7,1.85),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(c),transparent:true,fog:false}));return m}
+function gate(z,opts){
+ const g=new THREE.Group();g.position.z=z;
+ opts.forEach((t,i)=>{const x=LX[i],c=LC[i];
+  [-1.7,1.7].forEach(d=>g.add(mesh(new THREE.CylinderGeometry(.2,.2,2.7,10),c,x+d,1.35,0)));
+  g.add(mesh(new THREE.BoxGeometry(3.8,.4,.4),c,x,2.7,0));
+  const f=new THREE.Mesh(new THREE.PlaneGeometry(3.4,2.5),new THREE.MeshBasicMaterial({color:c,transparent:true,opacity:.22,depthWrite:false}));f.position.set(x,1.3,0);g.add(f);
+  const l=label(t,'#'+c.toString(16).padStart(6,'0'));l.position.set(x,4,0);g.add(l)});
+ return g}
+function palm(x,z){const g=new THREE.Group();g.position.set(x,0,z);g.add(mesh(new THREE.CylinderGeometry(.18,.3,6,6),0x8b5a2b,0,3,0));
+ for(let k=0;k<5;k++){const p=new THREE.Group();p.position.y=6;p.rotation.y=k*1.2566;const l=mesh(new THREE.ConeGeometry(.5,3.4,4),0x2e9d3a);l.geometry.translate(0,1.7,0);l.rotation.z=1.2;p.add(l);g.add(p)}return g}
+function house(x,z){const g=new THREE.Group();g.position.set(x,0,z);g.add(mesh(new THREE.BoxGeometry(6,3,5),0xa77b4d,0,3.5,0));
+ [[-2.7,-2.2],[2.7,-2.2],[-2.7,2.2],[2.7,2.2]].forEach(p=>g.add(mesh(new THREE.CylinderGeometry(.2,.2,2,6),0x6b4a2a,p[0],1,p[1])));
+ const r=mesh(new THREE.ConeGeometry(4.8,2.6,4),0xb5412b,0,6.3,0);r.rotation.y=Math.PI/4;g.add(r);return g}
+function build(n,len){
+ if(world)S.remove(world);world=new THREE.Group();S.add(world);
+ const L=len+120,pl=(w,c,y,x=0)=>{const m=mesh(new THREE.PlaneGeometry(w,L+100),c,x,y,-L/2+10);m.rotation.x=-Math.PI/2;world.add(m)};
+ pl(400,0x6fbf4f,0);pl(14,0xd2a56a,.02);pl(.15,0xfff3cf,.04,-2);pl(.15,0xfff3cf,.04,2);
+ for(let z=40,i=0;z>-L;z-=9,i++)[-1,1].forEach(s=>{const x=s*(10+Math.random()*16);world.add(i%5==0?house(x,z):palm(x,z))})}
+function mkQ(){return sh([...W.keys()]).map(i=>{const d=Math.random()<.5?0:1,to=W[i][1-d],o=sh(W.map((_,k)=>k).filter(k=>k!=i)).slice(0,2).map(k=>W[k][1-d]),opts=sh([to,...o]);return{q:W[i][d],en:W[i][0],ans:opts.indexOf(to),opts,d}})}
+/* ---------- audio ---------- */
+let AC,mg,mt,mut=false,stp=0,nxT=0;
+function au(){if(!AC){try{AC=new(window.AudioContext||window.webkitAudioContext)();mg=AC.createGain();mg.gain.value=mut?0:.6;mg.connect(AC.destination)}catch(e){}}if(AC&&AC.state=='suspended')AC.resume();return AC}
+function tone(f,t,d,ty,v){const o=AC.createOscillator(),g=AC.createGain();o.type=ty;o.frequency.value=f;g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.001,t+d);o.connect(g);g.connect(mg);o.start(t);o.stop(t+d+.02)}
+const ML=[12,9,7,9,12,9,7,4,7,9,12,14,12,9,7,9],BS=[0,5,7,5],nf=n=>523.25*Math.pow(2,n/12);
+function sched(){while(nxT<AC.currentTime+.4){const i=stp%16;tone(nf(ML[i]),nxT,.2,'triangle',.07);if(i%2==0)tone(nf(BS[i>>2]-24),nxT,.3,'sine',.12);if(i%4==2)tone(nf(BS[i>>2]-12),nxT,.1,'square',.025);stp++;nxT+=.19}}
+function music(on){clearInterval(mt);if(on&&au()){nxT=AC.currentTime+.05;stp=0;mt=setInterval(sched,100)}}
+function sfx(k){if(!au())return;const t=AC.currentTime;
+ if(k=='star'){tone(988,t,.09,'square',.1);tone(1319,t+.07,.15,'square',.1)}
+ else if(k=='ok')[523,659,784,1047].forEach((f,i)=>tone(f,t+i*.08,.22,'triangle',.25));
+ else{tone(220,t,.2,'sawtooth',.18);tone(147,t+.15,.35,'sawtooth',.18)}}
+function mute(){mut=!mut;if(mg)mg.gain.value=mut?0:.6;$('#mu').textContent=mut?'🔇':'🎵'}
+/* ---------- game ---------- */
+function startTurn(){
+ $('#s2').hidden=true;const sp=SP[diff],GAP=sp*10,qs=mkQ(),n=qs.length;
+ build(n,GAP*n+60);
+ st={qs,qi:0,h:3,ok:0,stars:0,z:0,x:0,lane:1,y:0,vy:0,inv:0,sp,go:false,ph:0,items:[],gates:[],fin:-(GAP*n+50),sh:0};
+ qs.forEach((q,i)=>{const gz=-GAP*(i+1);world.add(gate(gz,q.opts));st.gates.push({z:gz,q});
+  [.6,.25].forEach(w=>{const bl=sh([0,1,2]),nb=diff==2?2:1;
+  for(let b=0;b<nb;b++){const m=mesh(new THREE.BoxGeometry(1.8,1.1,1.6),0xb5793a,LX[bl[b]],.55,gz+GAP*w);m.add(mesh(new THREE.BoxGeometry(1.9,.15,1.7),0xe0a45e,0,.55,0));world.add(m);st.items.push({m,t:'o',on:true})}
+  for(let k=0;k<6;k++){const m=mesh(starG,0xffd21f,LX[bl[2]],1.2,gz+GAP*(w+.28)-k*3);m.material.emissive=new THREE.Color(0xaa7a00);world.add(m);st.items.push({m,t:'s',on:true})}})});
+ $('#hud').hidden=$('#ctl').hidden=false;music(true);$('#tn').textContent=teams[cur].n;showQ();hud();fb('Siap? Lari!');
+ setTimeout(()=>st&&(st.go=true),1300)}
+function showQ(){const s=st;if(s.qi>=s.qs.length){$('#ql').textContent='';$('#q').textContent='Menuju garis finis!';return}
+ const q=s.qs[s.qi];$('#ql').textContent=q.d?'Pilih kata Inggris untuk:':'Pilih arti dari:';$('#q').textContent=q.q;if(!q.d)speak(q.en)}
+function hud(){const s=st;$('#hh').textContent='❤️'.repeat(s.h)+'🖤'.repeat(3-s.h);$('#ss').textContent='⭐'+s.stars;$('#sc').textContent=s.ok*10+s.stars*2+' poin'}
+let ft;function fb(t){const e=$('#fb');e.textContent=t;e.style.opacity=1;clearTimeout(ft);ft=setTimeout(()=>e.style.opacity=0,1400)}
+function speak(t){try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='en-US';u.rate=.85;speechSynthesis.speak(u)}catch(e){}}
+function hurt(){const s=st;s.h--;s.inv=1.3;s.sh=.4;hud();if(s.h<=0){s.done=true;fb('Nyawa habis!');setTimeout(endTurn,1200)}}
+function resolve(g){const s=st,l=Math.max(0,Math.min(2,Math.round(s.x/4)+1)),q=g.q;
+ if(l==q.ans){s.ok++;sfx('ok');fb('✅ Benar!  '+q.en);if(q.d)setTimeout(()=>speak(q.en),450)}else{sfx('bad');fb('❌ Jawaban: '+q.opts[q.ans]);hurt()}
+ s.qi++;hud();if(!s.done)showQ()}
+function limbs(ph,air){const a=air?.9:Math.sin(ph),b=air?-.9:-a;H.lL.rotation.x=a*.9;H.lR.rotation.x=b*.9;H.aL.rotation.x=b*.9;H.aR.rotation.x=a*.9;H.hd.rotation.z=Math.sin(ph/2)*.05}
+function upd(dt){const s=st;
+ if(s.go&&!s.done){s.z-=s.sp*dt;s.ph+=dt*s.sp*.85}
+ s.x+=(LX[s.lane]-s.x)*Math.min(1,dt*12);s.vy-=26*dt;s.y=Math.max(0,s.y+s.vy*dt);if(!s.y)s.vy=0;
+ s.inv=Math.max(0,s.inv-dt);s.sh=Math.max(0,s.sh-dt);
+ H.g.position.set(s.x,s.y+Math.abs(Math.sin(s.ph))*.1*(s.y==0),s.z);H.g.rotation.z=(LX[s.lane]-s.x)*.05;H.g.visible=!s.inv||(s.inv*12|0)%2==0;
+ limbs(s.ph,s.y>.1);
+ if(!s.done){
+  s.items.forEach(it=>{if(!it.on)return;const p=it.m.position;if(it.t=='s')it.m.rotation.y+=dt*3;
+   if(Math.abs(p.z-s.z)<(it.t=='s'?.9:.85)&&Math.abs(p.x-s.x)<1.3){
+    if(it.t=='s'){it.on=false;it.m.visible=false;s.stars++;sfx('star');hud()}else if(!s.inv&&s.y<1){it.on=false;it.m.visible=false;sfx('bad');fb('Aduh! Rintangan!');hurt()}}});
+  const g=s.gates[s.qi-(s.qi>=s.gates.length?0:0)];if(g&&!g.d&&s.z<g.z){g.d=true;resolve(g)}
+  if(s.z<s.fin)endTurn()}
+ const k=s.sh?Math.sin(s.sh*60)*.15:0;cam.position.set(s.x*.6+k,4.6,s.z+8.5);cam.lookAt(s.x*.6,1.4,s.z-10)}
+function idle(t){H.g.position.set(0,0,0);H.g.rotation.z=0;H.g.visible=true;limbs(t/140);cam.position.set(2.6,2.3,-6.2);cam.lookAt(0,1.5,0)}
+let lt=0;function loop(t){requestAnimationFrame(loop);const dt=Math.min(.05,(t-lt)/1000||0);lt=t;st?upd(dt):idle(t);R.render(S,cam)}
+build(1,20);requestAnimationFrame(loop);
+/* ---------- screens ---------- */
+const show=h=>{$('#s2').innerHTML=h;$('#s2').hidden=false;$('#s1').hidden=true};
+function ready(){const t=teams[cur];st=null;show(`<div class="card"><p>Giliran grup ${cur+1} dari ${teams.length}</p><h2>${esc(t.n)}</h2><p>Kumpulkan bintang, hindari kotak, dan lari ke gerbang yang benar. Kata Inggris akan dibacakan.</p><button class="go" id="rd">Lari!</button></div>`);$('#rd').onclick=startTurn}
+function endTurn(){const s=st;if(!s||s.fd)return;s.fd=true;const t=teams[cur];t.ok=s.ok;t.stars=s.stars;t.pts=s.ok*10+s.stars*2;t.rt=s.ok>=7?3:s.ok>=4?2:s.ok>=1?1:0;
+ $('#hud').hidden=$('#ctl').hidden=true;music(false);st=null;const last=cur==teams.length-1;
+ show(`<div class="card"><h2>${esc(t.n)} selesai!</h2><div class="big">${t.pts} poin</div><div class="stars">${'⭐'.repeat(t.rt)}${'☆'.repeat(3-t.rt)}</div><p>Benar ${t.ok} dari 8. Bintang dikumpulkan: ${t.stars}</p><button class="go" id="nx">${last?'Lihat skor akhir':'Giliran '+esc(teams[cur+1].n)}</button></div>`);
+ $('#nx').onclick=()=>{if(last)final();else{cur++;ready()}}}
+function final(){const r=[...teams].sort((a,b)=>b.pts-a.pts),md=['🥇','🥈','🥉'];
+ show(`<div class="card"><h2>Skor Akhir</h2><table><tr><th></th><th>Grup</th><th>Bintang</th><th>Benar</th><th>Poin</th></tr>${r.map((t,i)=>`<tr class="${i?'':'w'}"><td>${md[i]||i+1}</td><td>${esc(t.n)}</td><td>${'⭐'.repeat(t.rt)||'-'}</td><td>${t.ok}/8</td><td>${t.pts}</td></tr>`).join('')}</table><p>Bintang: 7-8 benar = 3, 4-6 = 2, 1-3 = 1.</p><button class="go sm" id="ag">Main lagi</button><button class="go sm" id="rs">Atur ulang</button></div>`);
+ $('#ag').onclick=begin;$('#rs').onclick=()=>{$('#s2').hidden=true;$('#s1').hidden=false}}
+function begin(){teams=nm.slice(0,nT).map((n,i)=>({n:n.trim()||'Grup '+(i+1)}));cur=0;ready()}
+function seg(el,ls,get,set){el.innerHTML='';ls.forEach((l,i)=>{const b=document.createElement('button');b.textContent=l;b.className=get()==i?'on':'';b.onclick=()=>{set(i);seg(el,ls,get,set)};el.appendChild(b)})}
+function names(){$('#names').innerHTML='';for(let i=0;i<nT;i++){const e=document.createElement('input');e.placeholder='Grup '+(i+1);e.maxLength=18;e.value=nm[i]||'';e.oninput=()=>nm[i]=e.value;$('#names').appendChild(e)}}
+seg($('#nt'),['1','2','3','4','5','6','7'],()=>nT-1,i=>{nT=i+1;names()});names();
+seg($('#lv'),['Mudah','Sedang','Sulit'],()=>diff,i=>diff=i);
+$('#go').onclick=()=>{nm=[...$('#names').children].map(e=>e.value);$('#s1').hidden=true;begin()};
+/* ---------- kontrol ---------- */
+const mv=d=>{if(st&&st.go&&!st.done)st.lane=Math.max(0,Math.min(2,st.lane+d))},jp=()=>{if(st&&st.go&&!st.done&&st.y==0)st.vy=9.5};
+addEventListener('keydown',e=>{const k=e.key;if(k=='ArrowLeft'||k=='a')mv(-1);else if(k=='ArrowRight'||k=='d')mv(1);else if(k=='ArrowUp'||k=='w'||k==' '){e.preventDefault();jp()}});
+[['#bl',()=>mv(-1)],['#br',()=>mv(1)],['#bj',jp]].forEach(([s,f])=>$(s).addEventListener('pointerdown',e=>{e.preventDefault();f()}));
+$('#spk').onclick=()=>st&&st.qs[st.qi]&&speak(st.qs[st.qi].en);
+$('#mu').onclick=mute;
+let sx,sy;$('#c').addEventListener('pointerdown',e=>{sx=e.clientX;sy=e.clientY});
+$('#c').addEventListener('pointerup',e=>{const dx=e.clientX-sx,dy=e.clientY-sy;if(Math.abs(dx)>35&&Math.abs(dx)>Math.abs(dy))mv(dx>0?1:-1);else if(dy<-35)jp()});
+</script></body></html>
